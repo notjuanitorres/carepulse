@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const fontSans = Plus_Jakarta_Sans({
@@ -21,14 +21,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className="dark" // Ensure SSR fallback
+      style={{ colorScheme: "dark" }}
+    >
       <body
-        className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}>
+        className={cn('min-h-screen bg-dark-300 font-sans antialiased', fontSans.variable)}
+      >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
         >
-            {children}
+          {children}
         </ThemeProvider>
       </body>
     </html>

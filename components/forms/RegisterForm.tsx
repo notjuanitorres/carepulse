@@ -33,16 +33,16 @@ const RegisterForm = ({ user }: { user: User }) => {
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
+    // @ts-ignore
     defaultValues: {
       ...PatientFormDefaultValues,
-      name: user?.name || '',
-      email: user?.email || '',
-      phone: user?.phone || '',
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
     },
   });
 
   async function onSubmit(values: z.infer<typeof PatientFormValidation>) {
-    console.log("Form submitted with values:", values);
     setisLoading(true);
 
     let formData;
@@ -60,10 +60,8 @@ const RegisterForm = ({ user }: { user: User }) => {
         birthDate: new Date(values.birthDate),
         identificationDocument: formData,
       };
-      console.log("Patient data prepared:", patientData);
-
+      // @ts-ignore
       const patient = await registerPatient(patientData);
-      console.log("Register patient response:", patient);
 
       if (patient) {
         router.push(`/patients/${user.$id}/new-appointment`);
@@ -80,7 +78,6 @@ const RegisterForm = ({ user }: { user: User }) => {
     <Form {...form}>
       <form
         onSubmit={(e) => {
-          console.log("Form submission triggered");
           form.handleSubmit(onSubmit)(e);
         }}
         className="space-y-12 flex-1"
@@ -357,9 +354,8 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         <SubmitButton
           isLoading={isLoading}
-          onClick={() => console.log("Current form state:", form.getValues())}
         >
-          Get Started
+          Register
         </SubmitButton>
       </form>
     </Form>

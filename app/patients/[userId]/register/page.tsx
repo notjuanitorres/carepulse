@@ -1,13 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import RegisterForm from "@/components/forms/RegisterForm";
 import { getUser } from "@/lib/actions/patient.actions";
 
 const Register = async ({ params: { userId } }: { params: { userId: string } }) => {
-  console.log('UserId received:', userId);
   const user = await getUser(userId);
-  console.log('User data received:', user);
   if (!user) {
     // Handle the case where user is not found
     return (

@@ -1,7 +1,6 @@
 import { ID, Query } from "node-appwrite";
 import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { InputFile } from "node-appwrite/file";
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -12,7 +11,6 @@ export const createUser = async (user: CreateUserParams) => {
       undefined,
       user.name
     );
-    console.log({ newUser });
 
     return parseStringify(newUser);
   } catch (error: any) {
@@ -25,7 +23,6 @@ export const createUser = async (user: CreateUserParams) => {
 };
 
 export const getUser = async (userId: string) => {
-  console.log('Getting user with ID:', userId);
   try {
     if (!userId) {
       console.error("No userId provided");
@@ -37,6 +34,27 @@ export const getUser = async (userId: string) => {
   } catch (error) {
     console.error(
       "An error occurred while retrieving the user details:",
+      error
+    );
+  }
+};
+
+export const getPatient = async (userId: string) => {
+  try {
+    if (!userId) {
+      console.error("No userId provided");
+      return null;
+    }
+    const patients = await databases.listDocuments(
+      NEXT_PUBLIC_DATABASE_ID,
+      NEXT_PUBLIC_PATIENT_COLLECTION_ID,
+      [Query.equal("userId", [userId])]
+    );
+    console.log("patients", patients);
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the patient details:",
       error
     );
   }
@@ -58,22 +76,22 @@ export const registerPatient = async ({
 
       // Upload to your storage
       uploadedFile = await storage.createFile(
-        "NEXT_PUBLIC_BUCKET_ID",
+        NEXT_PUBLIC_BUCKET_ID,
         ID.unique(),
         fileObject
       );
     }
 
     const newPatient = await databases.createDocument(
-      "NEXT_PUBLIC_DATABASE_ID",
-      "NEXT_PUBLIC_PATIENT_COLLECTION_ID",
+      NEXT_PUBLIC_DATABASE_ID,
+      NEXT_PUBLIC_PATIENT_COLLECTION_ID,
       ID.unique(),
       {
         identificationDocumentId: uploadedFile?.$id || null,
         identificationDocumentUrl: uploadedFile
-          ? `${"https://cloud.appwrite.io/v1"}/storage/buckets/NEXT_PUBLIC_BUCKET_ID/files/${
+          ? `${"https://cloud.appwrite.io/v1"}/storage/buckets/${NEXT_PUBLIC_BUCKET_ID}/files/${
               uploadedFile.$id
-            }/view?project=NEXT_PUBLIC_PROJECT_ID`
+            }/view?project=${NEXT_PUBLIC_PROJECT_ID}`
           : null,
         ...patient,
       }

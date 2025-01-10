@@ -46,8 +46,8 @@ export const getPatient = async (userId: string) => {
       return null;
     }
     const patients = await databases.listDocuments(
-      NEXT_PUBLIC_DATABASE_ID,
-      NEXT_PUBLIC_PATIENT_COLLECTION_ID,
+      "677ff4ca0023b459fcfd",
+      "677ff4ec003144f44727",
       [Query.equal("userId", [userId])]
     );
     console.log("patients", patients);
@@ -76,22 +76,22 @@ export const registerPatient = async ({
 
       // Upload to your storage
       uploadedFile = await storage.createFile(
-        NEXT_PUBLIC_BUCKET_ID,
+        "677ff617003b2165c0ab",
         ID.unique(),
         fileObject
       );
     }
 
     const newPatient = await databases.createDocument(
-      NEXT_PUBLIC_DATABASE_ID,
-      NEXT_PUBLIC_PATIENT_COLLECTION_ID,
+      "677ff4ca0023b459fcfd",
+      "677ff4ec003144f44727",
       ID.unique(),
       {
         identificationDocumentId: uploadedFile?.$id || null,
         identificationDocumentUrl: uploadedFile
-          ? `${"https://cloud.appwrite.io/v1"}/storage/buckets/${NEXT_PUBLIC_BUCKET_ID}/files/${
+          ? `${"https://cloud.appwrite.io/v1"}/storage/buckets/677ff617003b2165c0ab/files/${
               uploadedFile.$id
-            }/view?project=${NEXT_PUBLIC_PROJECT_ID}`
+            }/view?project=677ff43800113411eff7`
           : null,
         ...patient,
       }

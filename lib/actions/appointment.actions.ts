@@ -3,15 +3,14 @@
 import { ID } from "node-appwrite";
 import { databases } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { NEVER } from "zod";
 
 export const createAppointment = async (
   appointment: CreateAppointmentParams
 ) => {
   try {
     const newAppointment = await databases.createDocument(
-      NEXT_PUBLIC_DATABASE_ID,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID,
+      "677ff4ca0023b459fcfd",
+      "677ff521000017d7cfd6",
       ID.unique(),
       appointment
     );
@@ -25,8 +24,8 @@ export const createAppointment = async (
 export const getAppointment = async (appointmentId: string) => {
   try {
     const appointment = await databases.getDocument(
-      NEXT_PUBLIC_DATABASE_ID,
-      NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID,
+      "677ff4ca0023b459fcfd",
+      "677ff521000017d7cfd6",
       appointmentId,
     )
 

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { PatientFormValidation, UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser, registerPatient } from "@/lib/actions/patient.actions";
-import { FormFieldType } from "./PatientForm";
+import { FormFieldType } from "../CustomFormField";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
   Doctors,

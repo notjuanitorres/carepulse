@@ -46,11 +46,10 @@ export const getPatient = async (userId: string) => {
       return null;
     }
     const patients = await databases.listDocuments(
-      "677ff4ca0023b459fcfd",
-      "677ff4ec003144f44727",
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
-    console.log("patients", patients);
     return parseStringify(patients.documents[0]);
   } catch (error) {
     console.error(
@@ -76,22 +75,22 @@ export const registerPatient = async ({
 
       // Upload to your storage
       uploadedFile = await storage.createFile(
-        "677ff617003b2165c0ab",
+        process.env.NEXT_PUBLIC_BUCKET_ID!,
         ID.unique(),
         fileObject
       );
     }
 
     const newPatient = await databases.createDocument(
-      "677ff4ca0023b459fcfd",
-      "677ff4ec003144f44727",
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID!,
       ID.unique(),
       {
         identificationDocumentId: uploadedFile?.$id || null,
         identificationDocumentUrl: uploadedFile
-          ? `${"https://cloud.appwrite.io/v1"}/storage/buckets/677ff617003b2165c0ab/files/${
+          ? `${process.env.NEXT_PUBLIC_ENDPOINT!}/storage/buckets/${process.env.NEXT_PUBLIC_BUCKET_ID!}/files/${
               uploadedFile.$id
-            }/view?project=677ff43800113411eff7`
+            }/view?project=${process.env.NEXT_PUBLIC_PROJECT_ID!}`
           : null,
         ...patient,
       }
